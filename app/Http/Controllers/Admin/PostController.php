@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
+use App\Post;
 
 class PostController extends Controller
 {
@@ -35,7 +37,12 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = $request->all();
+        $newPost = new Post();
+        $newPost->fill($data);
+        $newPost = Str::of($newPost->title)->slug('-');
+        $newPost->save();
+        return redirect()->route('admin.posts.show', $newPost->id);
     }
 
     /**
