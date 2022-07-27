@@ -40,8 +40,10 @@ class PostController extends Controller
         $data = $request->all();
         $newPost = new Post();
         $newPost->fill($data);
-        $newPost = Str::of($newPost->title)->slug('-');
+        $newPost->slug = $this->getSlug($data['title']);
+        $newPost->published = isset($data['published']);
         $newPost->save();
+
         return redirect()->route('admin.posts.show', $newPost->id);
     }
 
@@ -88,5 +90,18 @@ class PostController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    private function getSlug($title)
+    {
+        $slug = Str::of($title)->slug('-');
+        $count = 1;
+    
+        while(Post::where('slug', $slug)->first()){
+        $slug = Str::of($title)->slug('-') . "-{$count}";
+        $count++;
+    }
+
+    return $slug;
     }
 }
