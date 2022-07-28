@@ -34,6 +34,7 @@
                         </td>
                         <td>
                             <a href="{{route('admin.posts.show', $post->id)}}" class="btn btn-primary">Visualizza</a>
+                            <a href="{{route('admin.posts.edit', $post->id)}}" class="btn btn-warning">Modifica</a>
                         </td>
                     </tr>
                     @endforeach
